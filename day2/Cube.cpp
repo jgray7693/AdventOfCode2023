@@ -26,40 +26,61 @@ int main(){
     int blockCount;
     //keeps track of the game index
     int counter = 1;
-    //keeps track of total sum of game indices
+    //keeps track of total sum of valid game indices
     int total = 0;
     //boolean to flag a game valid for not
     bool valid;
+    //keeps track of minimum required red blocks for game to be valid
+    int red_min;
+    //keeps track of minimum required green blocks for game to be valid
+    int green_min;
+    //keeps track of minimum required blue blocks for game to be valid
+    int blue_min;
+    //keeps track of sum of each game cubic
+    int cubicTotal = 0;
     //while input file has new lines
     while(getline(fin, input)){
+        //set all minimum required blocks to 0 for each new game
+        red_min = 0;
+        green_min = 0;
+        blue_min = 0;
         //set each new game to valid from the start
         valid = true;
         //convert input line to stringstream for easy parsing
         stringstream line(input);
         //parse through each "word" in stringstream if game is still valid
-        while(line >> partial && valid){
+        while(line >> partial){
             //if the word is a number, set it to blockCount
             if(isdigit(partial[0])){
                 blockCount = stoi(partial);
             }
-            //else check blockCount to each colors maximum amount and flag invalid where appropriate
+            //if the word is not a number
             else{
-                if(partial.find("red") != -1){
+                //if the word is red
+                if((int)partial.find("red") != -1){
+                    //set minimum required red blocks for the game
+                    red_min = max(red_min, blockCount);
+                    //flag game as invalid if greater than maximum allowed blocks
                     if (blockCount > red_max){
                         valid = false;
-                        
                     }
                 }
-                else if(partial.find("green") != -1){
+                //if the word is green
+                else if((int)partial.find("green") != -1){
+                    //set minimum required green blocks for the game
+                    green_min = max(green_min, blockCount);
+                    //flag game as invalid if greater than maximum allowed blocks
                     if(blockCount > green_max){
                         valid = false;
-                        
                     }
                 }
-                else if(partial.find("blue") != -1){
+                //if the word is blue
+                else if((int)partial.find("blue") != -1){
+                    //set minimum required blue blocks for the game
+                    blue_min = max(blue_min, blockCount);
+                    //flag game as invalid if greater than maximum allowed blocks
                     if(blockCount > blue_max){
                         valid = false;
-                        
                     }
                 }
             }
@@ -68,8 +89,12 @@ int main(){
         if(valid){
             total += counter;
         }
+        //calculate rolling cubic for the game
+        cubicTotal += (red_min * green_min * blue_min);
         counter++;
     }
     //print results from part 1
     cout << "Sum of indices of valid games: " << total << endl;
+    //print results from part 2
+    cout << "Cubic sum of all games: " << cubicTotal << endl;
 }
