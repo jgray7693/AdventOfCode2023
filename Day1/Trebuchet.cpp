@@ -10,7 +10,7 @@ using namespace std;
 
 int main(){
     ifstream fin;
-	fin.open("Trebuchet_Input.txt");
+	fin.open("Input.txt");
 	if (!fin.good()) throw "I/O error";
     
     //contains each word on each line of text
