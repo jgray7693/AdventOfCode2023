@@ -1,0 +1,7 @@
+all: 
+		g++ Gears.cpp -g -o Gears
+		./Gears
+compile:
+		g++ Gears.cpp -g -o Gears
+run:
+		./Gears
